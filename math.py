@@ -1,3 +1,7 @@
+
+# regex for a monomial : "^\s*[+-]?\s*(\d+(?:\.\d+)?)?\s*([\*]?)\s*(([X]\s*)(?(4)(\^)(\s*(\d+(?!\.)))|)?)?\s*"
+# split whitespaces
+
 class Polynomial:
     def __init__(self):
         self.a = None
