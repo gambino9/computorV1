@@ -94,15 +94,15 @@ def reduce_monomials(monomials: dict) -> dict:
                 degree_dict[exponent] = 0
             if '*' in monomial:
                 constant = monomial.split('*')[0]
-                degree_dict[exponent] += ast.literal_eval(constant)
+                # degree_dict[exponent] += ast.literal_eval(constant)
             else:
                 constant = monomial.split('X')[0]
                 try:
                     isinstance(ast.literal_eval(constant), int) or isinstance(ast.literal_eval(constant), float)
                 except SyntaxError:
                     constant = '1'
-                degree_dict[exponent] += ast.literal_eval(constant)  # TODO : if it works remove duplicate line
-            # degree_dict[exponent] += ast.literal_eval(constant)  # TODO : if it works remove duplicate line
+                # degree_dict[exponent] += ast.literal_eval(constant)
+            degree_dict[exponent] += ast.literal_eval(constant)
         else:
             constant = monomial
             exponent = '0'
