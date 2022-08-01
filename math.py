@@ -1,14 +1,9 @@
-
-# regex for a monomial : "^\s*[+-]?\s*(\d+(?:\.\d+)?)?\s*(([\*]?)\s*(([X]\s*)(?(4)(\^)(\s*(\d+(?!\.)))|)?))?\s*"
-# split whitespaces
-# https://regex101.com/r/pC4Aud/1
-
 class Polynomial:
     def __init__(self):
         self.a = None
         self.b = None
         self.c = None
-        pass
+        self.degree = None
 
     def ft_power(self, x, y, z=None):
         power = 1
@@ -58,11 +53,6 @@ class Polynomial:
         else:
             solution = (-self.b) / self.a
             print(f"The solution is :\n{solution}")
-
-    # A polynomial is reduced when there is only one monomial for each degree
-    # Here we also make sure the right term of the equation is 0
-    def reduce_polynomial_equation(self):
-        pass
 
     def identify_a_b_c(self):
         pass
