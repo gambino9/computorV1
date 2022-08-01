@@ -1,0 +1,2 @@
+class PolynomialError(Exception):
+    pass
