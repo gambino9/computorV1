@@ -42,8 +42,6 @@ testtttt_pattern = re.compile(
     r"([+-])?(\d+(?:\.\d+)?)(?(2)[*]?|)((X)(?(4)(\^)(\d+(?!\.))|)?)|([+-])?(\d+(?:\.\d+)?)|([+-])?((X)(?(11)(\^)(\d+(?!\.))|)?){1,1}")
 
 monomial_regex = r"([+-])?(\d+(?:\.\d+)?)(?(2)[*]?|)((X)(?(4)(\^)(\d+(?!\.))|)?)|([+-])?(\d+(?:\.\d+)?)|([+-])?((X)(?(11)(\^)(\d+(?!\.))|)?){1,1}"
-# monomial_regex = r"([+-])?(\d+(?:\.\d+)?)(?(2)[*]?|)((X)(?(4)(\^)(\d+(?!\.))|)?)|([+-])?(\d+(?:\.\d+)?)|([+-])?((X)(?(11)(\^)(\d+(?!\.))|)?){1,1}"
-# monomial_regex = r"([+-])?(\d+(?:\.\d+)?)(?(2)[*]?|)((X)(?(4)(\^)(\d+(?!\.))|)?)|([+-])?(\d+(?:\.\d+)?)|([+-])?((X)(?(11)(\^)(\d+(?!\.))|)?){1,1}"
 
 
 # Checks if expression contains letters, is empty, doesn't have '='
@@ -120,7 +118,7 @@ def remove_null_values(monomials_dict: dict) -> dict:
         del monomials_dict[null_key]
     # Ici on gere si le dictionnaire est vide parce que equation s'annule
     if not monomials_dict:
-        print("All reel numbers are solutions")
+        print("All reel numbers are solutions")  # TODO : maybe return a bool instead of quitting here ?
         sys.exit()
     else:
         return monomials_dict
@@ -156,6 +154,13 @@ def shift_right_side_expression(right_side: str, left_side: str) -> str:
     return merged_expression
 
 
+def check_expression_solvability(reduced_poly: dict) -> bool:
+    for degree in reduced_poly.keys():
+        if int(degree) > 2:
+            return False
+    return True
+
+
 # TODO : Etoffer partie math (non resolution au-dela du second degre, etc)
 # TODO : Faire du typing sur tout le projet
 if __name__ == "__main__":
@@ -181,6 +186,9 @@ if __name__ == "__main__":
 
         reduced_string = print_reduced_expression(non_null_dict)
         print(f"{reduced_string=}")
+
+        if not check_expression_solvability(non_null_dict):
+            print("The polynomial degree is strictly greater than 2, I can't solve this equation")
 
     except PolynomialError as err:
         print(f"ERROR : {err}")
