@@ -15,9 +15,17 @@ class Polynomial:
     def ft_square_root(self, x):
         return self.ft_power(x, 0.5)
 
-    # Evaluate degree of equation and
-    def which_degree(self, degree):
-        print(f"Polynomial degree : {degree}")
+    def identify_a_b_c(self, reduced_expression: dict) -> None:
+        self.a = reduced_expression.get('2', 0)
+        self.b = reduced_expression.get('1', 0)
+        self.c = reduced_expression.get('0', 0)
+
+    def calculate_discriminant(self, a, b, c):
+        discriminant = self.ft_power(b, 2) - (4 * a * c)
+        return discriminant
+
+    def identify_equation_degree(self, reduced_expression: dict) -> None:
+        degree = max(reduced_expression.keys())
         if degree == 0:
             pass
         elif degree == 1:  # forme ax + b = 0
@@ -25,13 +33,8 @@ class Polynomial:
         elif degree == 2:
             discriminant = self.calculate_discriminant(self.a, self.b, self.c)
             self.solve_second_degree_equation(discriminant)
-        elif degree > 2:
-            print("The polynomial degree is strictly greater than 2, i can't solve.")
-            # exit(0)
-
-    def calculate_discriminant(self, a, b, c):
-        discriminant = self.ft_power(b, 2) - (4 * a * c)
-        return discriminant
+        # elif degree > 2:
+        #     print("The polynomial degree is strictly greater than 2, i can't solve.")
 
     def solve_second_degree_equation(self, discriminant):
         if discriminant > 0:
@@ -53,9 +56,3 @@ class Polynomial:
         else:
             solution = (-self.b) / self.a
             print(f"The solution is :\n{solution}")
-
-    # For a polynomial expression as follows : AX^2 + BX + C
-    def identify_a_b_c(self, reduced_expression: dict) -> None:
-        self.a = reduced_expression.get('2', 0)
-        self.b = reduced_expression.get('1', 0)
-        self.c = reduced_expression.get('0', 0)
