@@ -54,5 +54,8 @@ class Polynomial:
             solution = (-self.b) / self.a
             print(f"The solution is :\n{solution}")
 
-    def identify_a_b_c(self):
-        pass
+    # For a polynomial expression as follows : AX^2 + BX + C
+    def identify_a_b_c(self, reduced_expression: dict) -> None:
+        self.a = reduced_expression.get('2', 0)
+        self.b = reduced_expression.get('1', 0)
+        self.c = reduced_expression.get('0', 0)
