@@ -3,8 +3,9 @@ class Polynomial:
         self.a = None
         self.b = None
         self.c = None
-        self.degree = None
         self.discriminant = None
+        # self.degree = None
+        self.degree = max(reduced_expression.keys())
         self.reduced_expression = reduced_expression
 
         self.identify_a_b_c()
@@ -35,9 +36,9 @@ class Polynomial:
         # self.discriminant = self.ft_power(self.b, 2) - (4 * self.a * self.c)
 
     def identify_equation_degree(self, reduced_expression: dict) -> None:
-        self.degree = max(reduced_expression.keys())
+        # self.degree = max(reduced_expression.keys())
         print(f'Polynomial degree : {self.degree}')  # TODO : Find place where to print it properly
-        # print(f'{self.degree=}')
+
         if self.degree == '0':
             pass
         elif self.degree == '1':  # forme ax + b = 0
@@ -49,7 +50,6 @@ class Polynomial:
         #     print("The polynomial degree is strictly greater than 2, i can't solve.")
 
     def solve_second_degree_equation(self, discriminant):
-        print(discriminant)
         if discriminant > 0:
             x1 = (-self.b + self.ft_square_root(discriminant)) / 2 * self.a
             x2 = (-self.b - self.ft_square_root(discriminant)) / 2 * self.a
@@ -63,10 +63,13 @@ class Polynomial:
             x2 = f"({-self.b} - i√{discriminant}) / 2*{self.a}"
             print(f"The discriminant is strictly negative, the two complex solutions are :\n{x1}\n{x2}")
 
+    # forme b * X + c
     def solve_first_degree_equation(self):
         if self.a == 0:  # P(x) = b
-            print("The solution is :\n")
+            print(f'{self.b}, {self.c}')
+            solution = (-self.c / self.b)
+            print(f"The solution is :\n{solution}")
         # Add here elif for special case when all reel number can be a solution (ax^0 = zx^0)
         else:
             solution = (-self.b) / self.a
-            print(f"The solution is :\n{solution}")
+            print(f"The solution is :\n{solution}")  # TODO : check this maybe it's redundant or false
