@@ -36,9 +36,8 @@ class Polynomial:
 
     def identify_equation_degree(self, reduced_expression: dict) -> None:
         print(f'Polynomial degree : {self.degree}')  # TODO : Find place where to print it properly
-
         if self.degree == '0':
-            pass
+            print(f'This equation has no solution.')
         elif self.degree == '1':  # forme ax + b = 0
             self.solve_first_degree_equation()
         elif self.degree == '2':
@@ -51,9 +50,8 @@ class Polynomial:
             x2 = (-self.b - self.ft_square_root(discriminant)) / (2 * self.a)
             print(f"The discriminant is strictly positive, the two solutions are :\n{x1}\n{x2}")
         elif discriminant == 0:
-            # print(f'{self.b=}, {self.a=}')
             x1 = ((-self.b) / (2 * self.a))
-            print(f"The solution is : {x1}")
+            print(f"The discriminant is equal to 0. The solution is : {x1}")
         elif discriminant < 0:
             x1 = f"({-self.b} + i√{discriminant}) / 2*{self.a}"
             x2 = f"({-self.b} - i√{discriminant}) / 2*{self.a}"
@@ -62,7 +60,7 @@ class Polynomial:
     # forme b * X + c
     def solve_first_degree_equation(self):
         if self.a == 0:  # P(x) = b
-            print(f'{self.b}, {self.c}')
+            # print(f'{self.b}, {self.c}')
             solution = (-self.c / self.b)
             print(f"The solution is :\n{solution}")
         # Add here elif for special case when all reel number can be a solution (ax^0 = zx^0)
