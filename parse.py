@@ -97,7 +97,7 @@ def reduce_monomials(monomials: dict) -> dict:
                 try:
                     isinstance(ast.literal_eval(constant), int) or isinstance(ast.literal_eval(constant), float)
                 except SyntaxError:
-                    if constant == '+':
+                    if constant == '+' or constant == '':
                         constant = '1'
                     elif constant == '-':
                         constant = '-1'
@@ -142,7 +142,7 @@ def print_reduced_expression(reduced_dict: dict) -> str:
         # reduced_string += f"{['', '+ '][v >= 0]}{str(v)}X^{k} "
     if reduced_string[0] == '+':
         reduced_string = reduced_string[2:]
-    reduced_string += " = 0"
+    reduced_string += "= 0"
     return reduced_string
 
 
