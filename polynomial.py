@@ -33,10 +33,8 @@ class Polynomial:
     def calculate_discriminant(self):
         discriminant = self.ft_power(self.b, 2) - (4 * self.a * self.c)
         return discriminant
-        # self.discriminant = self.ft_power(self.b, 2) - (4 * self.a * self.c)
 
     def identify_equation_degree(self, reduced_expression: dict) -> None:
-        # self.degree = max(reduced_expression.keys())
         print(f'Polynomial degree : {self.degree}')  # TODO : Find place where to print it properly
 
         if self.degree == '0':
@@ -46,17 +44,15 @@ class Polynomial:
         elif self.degree == '2':
             discriminant = self.calculate_discriminant()
             self.solve_second_degree_equation(discriminant)
-        # elif degree > 2:
-        #     print("The polynomial degree is strictly greater than 2, i can't solve.")
 
     def solve_second_degree_equation(self, discriminant):
         if discriminant > 0:
-            x1 = (-self.b + self.ft_square_root(discriminant)) / 2 * self.a
-            x2 = (-self.b - self.ft_square_root(discriminant)) / 2 * self.a
+            x1 = (-self.b + self.ft_square_root(discriminant)) / (2 * self.a)
+            x2 = (-self.b - self.ft_square_root(discriminant)) / (2 * self.a)
             print(f"The discriminant is strictly positive, the two solutions are :\n{x1}\n{x2}")
         elif discriminant == 0:
-            print(f'{self.b=}, {self.a=}')
-            x1 = ((-self.b) / (2*self.a))
+            # print(f'{self.b=}, {self.a=}')
+            x1 = ((-self.b) / (2 * self.a))
             print(f"The solution is : {x1}")
         elif discriminant < 0:
             x1 = f"({-self.b} + i√{discriminant}) / 2*{self.a}"
