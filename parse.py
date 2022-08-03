@@ -66,7 +66,6 @@ def check_len_string(retrieved_poly: str, poly: str) -> None:
 
 # Retrieves monomials from string and stores them in dictionary
 def retrieve_monomials(polynomial: str) -> dict:
-    print(f"{polynomial=}")
     monomial_pattern = re.compile(monomial_regex)
     iter_pattern = monomial_pattern.finditer(polynomial)
     monomials_dict = {}
@@ -98,7 +97,10 @@ def reduce_monomials(monomials: dict) -> dict:
                 try:
                     isinstance(ast.literal_eval(constant), int) or isinstance(ast.literal_eval(constant), float)
                 except SyntaxError:
-                    constant = '1'
+                    if constant == '+':
+                        constant = '1'
+                    elif constant == '-':
+                        constant = '-1'
                 # degree_dict[exponent] += ast.literal_eval(constant)
             degree_dict[exponent] += ast.literal_eval(constant)
         else:
@@ -161,36 +163,34 @@ def check_expression_solvability(reduced_poly: dict) -> bool:
     return True
 
 
-# TODO : Etoffer partie math (non resolution au-dela du second degre, etc)
-# TODO : Faire du typing sur tout le projet
-if __name__ == "__main__":
-    polynomial = '5 * X^0 + 4 * X^1 - 9.3 * X^2 = 1 * X^0'  # classique
-    polynomial_2 = '5 * X^0 + 4.87 * X^1 = 4 * X^0'  # avec un coefficient float
-    polynomial_3 = '8 * X^0 - 6 * X^1 + 0 * X^2 - 5.6 * X^3 = 3 * X^0'
-    polynomial_4 = '9 + 4 * X + X^2= -X^2'  # avec un int seul
-    polynomial_5 = '42 * X^0 = 42 * X^0'
-    polynomial_6 = '5 * X^0 = -5 * X^0'
-    polynomial_7 = '9 - 8X^0 - 6X^1 + 0X^2 - 5.6 * X^3 = 3 * X^0'  # forme naturelle et non naturelle melangees
-
-    try:
-        print(pol := polynomial_7)
-        # pol = polynomial_7.replace(" ", "")
-
-        poly = first_check(pol)
-        left_side_expression, right_side_expression = poly.split('=')
-        concat = shift_right_side_expression(right_side_expression, left_side_expression)
-        retrieved = retrieve_monomials(concat)
-        reduced_dict = reduce_monomials(retrieved)
-
-        non_null_dict = remove_null_values(reduced_dict)
-
-        reduced_string = print_reduced_expression(non_null_dict)
-        print(f"{reduced_string=}")
-
-        if not check_expression_solvability(non_null_dict):
-            print("The polynomial degree is strictly greater than 2, I can't solve this equation")
-
-    except PolynomialError as err:
-        print(f"ERROR : {err}")
-    finally:
-        sys.exit()
+# if __name__ == "__main__":
+#     polynomial = '5 * X^0 + 4 * X^1 - 9.3 * X^2 = 1 * X^0'  # classique
+#     polynomial_2 = '5 * X^0 + 4.87 * X^1 = 4 * X^0'  # avec un coefficient float
+#     polynomial_3 = '8 * X^0 - 6 * X^1 + 0 * X^2 - 5.6 * X^3 = 3 * X^0'
+#     polynomial_4 = '9 + 4 * X + X^2= -X^2'  # avec un int seul
+#     polynomial_5 = '42 * X^0 = 42 * X^0'
+#     polynomial_6 = '5 * X^0 = -5 * X^0'
+#     polynomial_7 = '9 - 8X^0 - 6X^1 + 0X^2 - 5.6 * X^3 = 3 * X^0'  # forme naturelle et non naturelle melangees
+#
+#     try:
+#         print(pol := polynomial_7)
+#         # pol = polynomial_7.replace(" ", "")
+#
+#         poly = first_check(pol)
+#         left_side_expression, right_side_expression = poly.split('=')
+#         concat = shift_right_side_expression(right_side_expression, left_side_expression)
+#         retrieved = retrieve_monomials(concat)
+#         reduced_dict = reduce_monomials(retrieved)
+#
+#         non_null_dict = remove_null_values(reduced_dict)
+#
+#         reduced_string = print_reduced_expression(non_null_dict)
+#         print(f"{reduced_string=}")
+#
+#         if not check_expression_solvability(non_null_dict):
+#             print("The polynomial degree is strictly greater than 2, I can't solve this equation")
+#
+#     except PolynomialError as err:
+#         print(f"ERROR : {err}")
+#     finally:
+#         sys.exit()
