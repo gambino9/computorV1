@@ -1,7 +1,10 @@
 from polynomial import Polynomial
 from parse import *
+import sys
 
-if __name__ == "__main__":
+
+# if __name__ == "__main__":
+def main(polynomial_expression: str):
     polynomial = '5 * X^0 + 4 * X^1 - 9.3 * X^2 = 1 * X^0'  # classique
     polynomial_2 = '5 * X^0 + 4.87 * X^1 = 4 * X^0'  # avec un coefficient float
     polynomial_3 = '8 * X^0 - 6 * X^1 + 0 * X^2 - 5.6 * X^3 = 3 * X^0'
@@ -17,10 +20,12 @@ if __name__ == "__main__":
 
     poly_slack = 'X^1 + X^5 = X^5'
 
-    poly_test = '5 * X^7 + 3 * X^1 + 3 * X^2 = 1 * X^0 + 0 * X^1'
+    # poly_test = '5 * X^7 + 3 * X^1 + 3 * X^2 = 1 * X^0 + 0 * X^1'
+    poly_test = polynomial_expression
 
     try:
-        print(pol := poly_test)
+        pol = polynomial_4
+        # print(pol)
 
         poly = first_check(pol)
         left_side_expression, right_side_expression = poly.split('=')
@@ -39,6 +44,17 @@ if __name__ == "__main__":
         polynomial_solver = Polynomial(non_null_dict)
 
     except PolynomialError as err:
-        print(f"ERROR : {err}")
-    finally:
-        sys.exit()
+        # print(f"ERROR : {err}")
+        return f"ERROR : {err}"
+    # except ValueError as err:
+    #     print(f"ERROR : There must be no alphabetical characters in the expression.")
+    # finally:
+    #     sys.exit()
+
+
+if __name__ == "__main__":
+    arg = sys.argv[1:]
+    if not isinstance(arg, str) or len(arg) > 1:  # TODO : This is not handled correctly
+        print("ERROR : the argument is not correctly formatted")
+
+    main(arg)
