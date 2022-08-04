@@ -16,6 +16,7 @@
 import sys
 import unittest
 from exceptions import PolynomialError
+from polynomial import Polynomial
 from main import main
 from parse_2 import Parser
 
@@ -37,18 +38,34 @@ class PolynomialTest(unittest.TestCase):
             parser_2.retrieve_monomials()
 
     def test_natural_form(self):
-        natural = '9 + 4X + X^2 = +X^2'
-        # parser = Parser(natural)
+        natural_expression = '9 + 4X + X^2 = +X^2'
+        parser = Parser(natural_expression)
+        monomes = parser.remove_null_values()
+        solver = Polynomial(monomes)
 
-        # self.assertEqual(parser.print_reduced_expression(), "Reduced form : 9 + 4 X = 0")
-        pass
+        self.assertEqual(parser.print_reduced_expression(), "Reduced form : 9 + 4X = 0")
+        self.assertEqual(solver.degree, '1')
+        self.assertEqual(solver.solution, -2.25)
 
     def test_mixed_natural_and_non_natural_form(self):
-        mixed_expression = '9 - 8X^0 - 6X^1 + 0X^2 - 5.6 * X^3 = 3 * X^0'
-        pass
+        mixed_expression = '9 - 8 - 6X^1 + 0X^2 - 5.6 * X^2 = 3 * X^0'
+        parser = Parser(mixed_expression)
+        monomes = parser.remove_null_values()
+        solver = Polynomial(monomes)
+
+        self.assertEqual(parser.print_reduced_expression(), "Reduced form : - 2 - 6X - 5.6X^2 = 0")
+        self.assertEqual(solver.degree, '2')
+        self.assertEqual(solver.solution, '(6 + i√-8.799999999999997) / -11.2')
+        self.assertEqual(solver.solution_2, '(6 - i√-8.799999999999997) / -11.2')
 
     def test_equation_degree_zero(self):
-        pass
+        zero_expression = '5 * X^0 + 4.87 * X^1 = 4.87 * X^1'
+        parser = Parser(zero_expression)
+        monomes = parser.remove_null_values()
+        solver = Polynomial(monomes)
+
+        self.assertEqual(parser.print_reduced_expression(), "Reduced form : 5 = 0")
+        self.assertEqual(solver.degree, '0')
 
     def test_impossible_equation(self):
         pass
