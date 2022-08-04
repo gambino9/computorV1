@@ -4,7 +4,8 @@ class Polynomial:
         self.b = None
         self.c = None
         self.discriminant = None
-        # self.degree = None
+        self.solution = None
+        self.solution_2 = None
         self.degree = max(reduced_expression.keys())
         self.reduced_expression = reduced_expression
 
@@ -43,27 +44,29 @@ class Polynomial:
         elif self.degree == '2':
             discriminant = self.calculate_discriminant()
             self.solve_second_degree_equation(discriminant)
+        elif int(self.degree) > 2:
+            print("The polynomial degree is strictly greater than 2, I can't solve it.")
 
     def solve_second_degree_equation(self, discriminant):
         if discriminant > 0:
-            x1 = (-self.b + self.ft_square_root(discriminant)) / (2 * self.a)
-            x2 = (-self.b - self.ft_square_root(discriminant)) / (2 * self.a)
-            print(f"The discriminant is strictly positive, the two solutions are :\n{x1}\n{x2}")
+            self.solution = (-self.b + self.ft_square_root(discriminant)) / (2 * self.a)
+            self.solution_2 = (-self.b - self.ft_square_root(discriminant)) / (2 * self.a)
+            print(f"The discriminant is strictly positive, the two solutions are :\n{self.solution}\n{self.solution_2}")
         elif discriminant == 0:
-            x1 = ((-self.b) / (2 * self.a))
-            print(f"The discriminant is equal to 0. The solution is : {x1}")
+            self.solution = ((-self.b) / (2 * self.a))
+            print(f"The discriminant is equal to 0. The solution is : {self.solution}")
         elif discriminant < 0:
-            x1 = f"({-self.b} + i√{discriminant}) / 2*{self.a}"
-            x2 = f"({-self.b} - i√{discriminant}) / 2*{self.a}"
-            print(f"The discriminant is strictly negative, the two complex solutions are :\n{x1}\n{x2}")
+            self.solution = f"({-self.b} + i√{discriminant}) / {2 * self.a}"
+            self.solution_2 = f"({-self.b} - i√{discriminant}) / {2 * self.a}"
+            print(f"The discriminant is strictly negative, the two complex solutions are :\n{self.solution}\n{self.solution_2}")
 
     # forme b * X + c
     def solve_first_degree_equation(self):
         if self.a == 0:  # P(x) = b
-            # print(f'{self.b}, {self.c}')
-            solution = (-self.c / self.b)
-            print(f"The solution is :\n{solution}")
+            self.solution = (-self.c / self.b)
+            print(f"The solution is :\n{self.solution}")
+            # return f"The solution is :\n{self.solution}"
         # Add here elif for special case when all reel number can be a solution (ax^0 = zx^0)
         else:
-            solution = (-self.b) / self.a
-            print(f"The solution is :\n{solution}")  # TODO : check this maybe it's redundant or false
+            self.solution = (-self.b) / self.a
+            print(f"The solution is :\n{self.solution}")  # TODO : check this maybe it's redundant or false
