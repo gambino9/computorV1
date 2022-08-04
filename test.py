@@ -13,11 +13,11 @@
 # Equation degre 3 ou plus : Ne resout pas et ne plante pas
 # Bonus :
 # Prouver les erreurs de syntaxes, entrees sous forme naturelle, fraction irreductible quand c'est cense, etapes intermediaires, etc...
-
-
+import sys
 import unittest
 from exceptions import PolynomialError
 from main import main
+from parse_2 import Parser
 
 
 class PolynomialTest(unittest.TestCase):
@@ -26,12 +26,21 @@ class PolynomialTest(unittest.TestCase):
         too_many_addition = "5 + 4 * X ++ X^2 = X^2 -- X^2"
         float_exponent = "5 + 4 * X + X^2.3 = X^2 - X^2"
 
-        self.assertEqual(main(letter), "ERROR : There must be no alphabetical characters in the expression.")
-        self.assertEqual(main(too_many_addition), "ERROR : The polynomial expression is syntactically incorrect")
-        self.assertEqual(main(float_exponent), "ERROR : The polynomial expression is syntactically incorrect")
+        parser = Parser(letter)
+        parser_1 = Parser(too_many_addition)
+        parser_2 = Parser(float_exponent)
+        with self.assertRaises(PolynomialError):
+            parser.first_check()
+        with self.assertRaises(PolynomialError):
+            parser_1.retrieve_monomials()
+        with self.assertRaises(PolynomialError):
+            parser_2.retrieve_monomials()
 
     def test_natural_form(self):
         natural = '9 + 4X + X^2 = +X^2'
+        # parser = Parser(natural)
+
+        # self.assertEqual(parser.print_reduced_expression(), "Reduced form : 9 + 4 X = 0")
         pass
 
     def test_mixed_natural_and_non_natural_form(self):
