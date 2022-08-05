@@ -42,7 +42,7 @@ class Polynomial:
             self.solution = 'unsolvable'
             print("The polynomial degree is strictly greater than 2, I can't solve it.")
 
-    # aX + bX + c form
+    # aX^2 + bX + c form
     def solve_second_degree_equation(self):
         if self.discriminant > 0:
             self.solution = (-self.b + self.ft_square_root(self.discriminant)) / (2 * self.a)
