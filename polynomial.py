@@ -1,3 +1,6 @@
+from typing import Union
+
+
 class Polynomial:
     def __init__(self, reduced_expression: dict) -> None:
         self.a = None
@@ -13,7 +16,7 @@ class Polynomial:
         self.discriminant = self.calculate_discriminant()
         self.identify_equation_degree()
 
-    def ft_square_root(self, x):
+    def ft_square_root(self, x: Union[int, float]) -> Union[int, float]:
         sqrt = x ** 0.5
         return sqrt
 
@@ -40,7 +43,7 @@ class Polynomial:
             print("The polynomial degree is strictly greater than 2, I can't solve it.")
 
     # aX + bX + c form
-    def solve_second_degree_equation(self):  # TODO : Use self.discriminant ?
+    def solve_second_degree_equation(self):
         if self.discriminant > 0:
             self.solution = (-self.b + self.ft_square_root(self.discriminant)) / (2 * self.a)
             self.solution_2 = (-self.b - self.ft_square_root(self.discriminant)) / (2 * self.a)
