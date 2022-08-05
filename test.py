@@ -1,7 +1,7 @@
 import unittest
 from exceptions import PolynomialError
 from polynomial import Polynomial
-from parse_2 import Parser
+from parse import Parser
 
 
 class PolynomialTest(unittest.TestCase):

@@ -1,6 +1,6 @@
 from polynomial import Polynomial
-from parse_2 import Parser
-from parse import *
+from exceptions import PolynomialError
+from parse import Parser
 import sys
 
 
