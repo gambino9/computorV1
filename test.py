@@ -1,23 +1,6 @@
-# Entree bien formattees mais potentiellement mal gerees (coefficients nuls, negatifs, pas entiers...)
-# Equation de degre 0 : 5 * X^ 0 = 5 * X^ 0 ---> Tout les nombres reels sont solutions
-# 5 * X^ 0 = 5 * X^ 0
-# 42 * X^0 = 42 * X^0
-
-# Equation impossible : ex : 4 * x^0 = 8 * X^0 ---> Le programme doit dire qu'il n'y a pas de solution  --> OUI
-
-# Equation de degre 1 : Le programme doit afficher la bonne solution 5 * X^0 = 4 * X^0 + 7 * X^1 --> OUI
-
-# Equation second degre discriminant positif : ex : 5 * X^0 + 13 * X^1 + 3 * X^2 = 1 * X^0 + 1 * X^1 ---> Doit afficher que le discriminant est strictement positif + afficher deux solutions, est-ce que c'est les bonnes ?  --> Normalement OUI
-# Equation second degre discriminant nul : ex : 6 * X^0 + 11 * X^1 + 5 * X^2 = 1 * X^0 + 1 * X^1 ---> Le programme doit afficher discriminant nul et afficher la bonne unique solution --> OUI
-# Equation second degre discriminant negatif : ex : 5 * X^0 + 3 * X^1 + 3 * X^2 = 1 * X^0 + 0 * X^1 ---> Discriminant negatif et deux bonnes solutions complexes  -> OUI
-# Equation degre 3 ou plus : Ne resout pas et ne plante pas
-# Bonus :
-# Prouver les erreurs de syntaxes, entrees sous forme naturelle, fraction irreductible quand c'est cense, etapes intermediaires, etc...
-import sys
 import unittest
 from exceptions import PolynomialError
 from polynomial import Polynomial
-from main import main
 from parse_2 import Parser
 
 
