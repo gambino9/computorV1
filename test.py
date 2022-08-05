@@ -68,16 +68,52 @@ class PolynomialTest(unittest.TestCase):
         self.assertEqual(solver.degree, '0')
 
     def test_impossible_equation(self):
-        pass
+        impossible_equation = '4 * x^0 = 8 * X^0'
+        parser = Parser(impossible_equation)
+        monomes = parser.remove_null_values()
+        solver = Polynomial(monomes)
+
+        self.assertEqual(parser.print_reduced_expression(), "Reduced form : - 4 = 0")
+        self.assertEqual(solver.degree, '0')
+        self.assertEqual(solver.solution, 'No solution')
+
+    def test_all_reel_numbers_are_solution(self):
+        impossible_equation_2 = '42 * X^0 = 42 * X^0'
+        parser = Parser(impossible_equation_2)
+
+        with self.assertRaises(SystemExit):
+            parser.remove_null_values()
 
     def test_equation_first_degree(self):
-        pass
+        first_degree_expression = '5 * X^0 = 4 * X^0 + 7 * X^1'
+        parser = Parser(first_degree_expression)
+        monomes = parser.remove_null_values()
+        solver = Polynomial(monomes)
+
+        self.assertEqual(parser.print_reduced_expression(), "Reduced form : 1 - 7X = 0")
+        self.assertEqual(solver.degree, '1')
+        self.assertAlmostEqual(solver.solution, 0.142, 2)
 
     def test_equation_second_degree_positive_discriminant(self):
-        pass
+        equation = '3 * X^0 + 9 * X^1 + 6 * X^2 = 1 * X^0 + 2 * X^1'
+        parser = Parser(equation)
+        monomes = parser.remove_null_values()
+        solver = Polynomial(monomes)
+
+        self.assertEqual(parser.print_reduced_expression(), "Reduced form : 2 + 7X + 6X^2 = 0")
+        self.assertEqual(solver.degree, '2')
+        self.assertEqual(solver.solution, -0.5)
+        self.assertAlmostEqual(solver.solution_2, -0.666, 2)
 
     def test_equation_second_degree_null_discriminant(self):
-        pass
+        equation = '6 * X^0 + 11 * X^1 + 5 * X^2 = 1 * X^0 + 1 * X^1'
+        parser = Parser(equation)
+        monomes = parser.remove_null_values()
+        solver = Polynomial(monomes)
+
+        self.assertEqual(parser.print_reduced_expression(), "Reduced form : 5 + 10X + 5X^2 = 0")
+        self.assertEqual(solver.degree, '2')
+        self.assertEqual(solver.solution, -1)
 
     def test_equation_second_degree_negative_discriminant(self):
         pass
