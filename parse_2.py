@@ -47,37 +47,36 @@ monomial_regex = r"([+-])?(\d+(?:\.\d+)?)(?(2)[*]?|)((X)(?(4)(\^)(\d+(?!\.))|)?)
 class Parser:
     def __init__(self, polynomial_expression: str) -> None:
         self.polynomial_expression = polynomial_expression
-        # self.monomial_dict = self.remove_null_values()
 
-    # Checks if expression contains letters, is empty, doesn't have '='
     def first_check(self) -> str:
+        """
+        Checks if expression contains letters, is empty, doesn't have '='
+        """
         polynomial_string = self.polynomial_expression.upper()
         polynomial_string = polynomial_string.replace(" ", "")
-        # try:
         if any(letter.isalpha() and letter != 'X' for letter in polynomial_string):
             raise PolynomialError("There must be no alphabetical characters in the expression.")
         if polynomial_string == "":
             raise PolynomialError("The expression must not be empty.")
         if Counter(polynomial_string)['='] != 1:
             raise PolynomialError("The expression must contains the equal sign")
-        # except PolynomialError as err:
-        #     print(f"ERROR : {err}")
-            # sys.exit()
+        if polynomial_string.split('=')[0] == "" or polynomial_string.split('=')[1] == "":
+            raise PolynomialError("The expression is wrongly formatted.")
         return polynomial_string
 
-    # Check for syntactical errors by checking len of polynomial expression
     def check_len_string(self, retrieved_poly: str, poly: str) -> None:
+        """
+        Check for syntactical errors by checking len of polynomial expression
+        """
         poly_len = sum(not char.isspace() for char in poly)
-        # try:
         if len(retrieved_poly) != poly_len:
             raise PolynomialError("The polynomial expression is syntactically incorrect")
-        # except PolynomialError as err:
-        #     print(f"ERROR : {err}")
-            # sys.exit()
 
-    # Inverts mathematical signs of right expression and concatenate
-    # with left expression. Returns concatenation
     def shift_right_side_expression(self) -> str:
+        """
+        Inverts mathematical signs of right expression and concatenate
+         with left expression. Returns concatenation
+        """
         polynomial_string = self.first_check()
         left_side, right_side = polynomial_string.split('=')
         if right_side[0] != '+' and right_side[0] != '-':
@@ -86,8 +85,10 @@ class Parser:
         merged_expression = "".join([left_side, res])
         return merged_expression
 
-    # Retrieves monomials from string and stores them in dictionary
     def retrieve_monomials(self) -> dict:
+        """
+        Retrieves monomials from string using regex and stores them in dictionary
+        """
         polynomial = self.shift_right_side_expression()
         monomial_pattern = re.compile(monomial_regex)
         iter_pattern = monomial_pattern.finditer(polynomial)
@@ -99,9 +100,11 @@ class Parser:
         self.check_len_string(len_string, polynomial)
         return monomials_dict
 
-    # Takes dictionary of monomials and computes
-    # the constants. Returns the reduced form
     def reduce_monomials(self) -> dict:
+        """
+        Takes dictionary of monomials and computes the constants
+        Returns the reduced form as a dictionary
+        """
         monomials = self.retrieve_monomials()
         degree_dict = {}
         for monomial in monomials.values():
@@ -114,7 +117,6 @@ class Parser:
                     degree_dict[exponent] = 0
                 if '*' in monomial:
                     constant = monomial.split('*')[0]
-                    # degree_dict[exponent] += ast.literal_eval(constant)
                 else:
                     constant = monomial.split('X')[0]
                     try:
@@ -124,7 +126,6 @@ class Parser:
                             constant = '1'
                         elif constant == '-':
                             constant = '-1'
-                    # degree_dict[exponent] += ast.literal_eval(constant)
                 degree_dict[exponent] += ast.literal_eval(constant)
             else:
                 constant = monomial
@@ -135,34 +136,36 @@ class Parser:
 
         return degree_dict
 
-    # remove the monomials which constants are equal to zero
     def remove_null_values(self) -> dict:
+        """
+        Remove the monomials which constants are equal to zero
+        After, checks if dict is empty, if so, all reel numbers are solution
+        """
         monomials_dict = self.reduce_monomials()
         null_values = [key for key in monomials_dict if monomials_dict[key] == 0]
         for null_key in null_values:
             del monomials_dict[null_key]
-        # Ici on gere si le dictionnaire est vide parce que equation s'annule
         if not monomials_dict:
-            print("All reel numbers are solutions")  # TODO : maybe return a bool instead of quitting here ?
+            print("All reel numbers are solutions")
             sys.exit()
         else:
             return monomials_dict
 
     def print_reduced_expression(self) -> str:
+        """
+        Iterate through the monomials dictionary to print
+        the expression under a natural and reduced form
+        """
         reduced_dict = self.remove_null_values()
         reduced_string = ""
         sorted_reduced_dict = dict(sorted(reduced_dict.items(), key=lambda x: x[0]))
         for k, v in sorted_reduced_dict.items():
             if k == '0':
-                # reduced_string += f"{['', '+ '][v >= 0]}{str(v)} "
                 reduced_string += f"{['', '+ '][v >= 0] or ['', '- '][v < 0]}{str(abs(v))} "
             elif k == '1':
-                # reduced_string += f"{['', '+ '][v >= 0]}{str(v)}X "
                 reduced_string += f"{['', '+ '][v >= 0] or ['', '- '][v < 0]}{str(abs(v))}X "
             else:
-                # reduced_string += f"{['', '+ '][v >= 0]}{str(v)}X^{k} "
                 reduced_string += f"{['', '+ '][v >= 0] or ['', '- '][v < 0]}{str(abs(v))}X^{k} "
-            # reduced_string += f"{['', '+ '][v >= 0]}{str(v)}X^{k} "
         if reduced_string[0] == '+':
             reduced_string = reduced_string[2:]
         reduced_string += "= 0"
