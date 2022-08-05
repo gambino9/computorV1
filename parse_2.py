@@ -1,34 +1,36 @@
-# regex for a monomial : "^\s*[+-]?\s*(\d+(?:\.\d+)?)?\s*(([\*]?)\s*(([X]\s*)(?(4)(\^)(\s*(\d+(?!\.)))|)?))?\s*"
-# split whitespaces
-# https://regex101.com/r/pC4Aud/1
+# Regex to detect one monomial : r"([+-])?(\d+(?:\.\d+)?)(?(2)[*]?|)((X)(?(4)(\^)(\d+(?!\.))|)?)|([+-])?(\d+(?:\.\d+)?)|([+-])?((X)(?(11)(\^)(\d+(?!\.))|)?){1,1}"
 
-# Without spaces : "^([+-])?(\d+(?:\.\d+)?)?([\*]?)(([X])(?(5)(\^)(\d+(?!\.))|)?)?"
+# This regex is meant to detect a single monomial, which can come into
+# the form of a constant (number) alone, a constant with a variable ('X'),
+# or a variable alone.
+# Thus, the regex is composed of 3 parts that can detect either one of these
+# monomial forms.
+
+# 1st part : ([+-])?(\d+(?:\.\d+)?)(?(2)[*]?|)((X)(?(4)(\^)(\d+(?!\.))|)?)|
+# This 1st part is to detect a complete monomial (constant + variable)
 
 # 1st capturing group : ([+-])?
 # 1st character may be a "-" or "+", but it is optional
 
-# 2nd capturing group : (\d+(?:\.\d+)?)?
-# May be an int (\d+) or a float, or nothing. (\.\d+)
-# (?:...) matches everything enclosed
+# 2nd capturing group : (\d+(?:\.\d+)?)
+# May be an int (\d+) or a float, or nothing
 
-# 3rd capturing group : ([\*]?)
-# A single "*" can be match, but is also optional
+# (?(2)[*]?|) : Makes the detection of the '*'character depends on the
+# presence of an int of a float.
 
-# 4th capturing group : (([X])(?(5)(\^)((\d+(?!\.)))|)?)?
-# 5th capturing group : ([X])
-# 6th capturing group : (\^)
-# 7th capturing group : (\d+(?!\.))
+# 3rd capturing group : ((X)(?(4)(\^)(\d+(?!\.))|)?)
+# 4th capturing group : (X) matches the character 'X'
+# Conditional (?(4)(\^)(\d+(?!\.))|)? : Matches the char '^' only if
+# the 4th capturing group has been detected
 
-# 4th capturing group : a conditional statement enclosing 5th, 6th, 7th
-# groups. If 5th group returns a match, the pattern before the "|" is matched
-# otherwise, the pattern after the "|" is matched. Here, it allows us to check
-# that an "X" character is matched before we try to match 6th capturing
-# group "^" char and what comes after. In other words, "^\d" is dependant on
-# a "X" char presence to be matched.
+# 6th capturing group : (\d+(?!\.)) : doesn't allow the exponent to be a float
 
-# 7th capturing group : Only accepts an int after the "^" char. Float are
-# explicitly forbidden with the negative lookahead(?!...), that ensures that
-# the float pattern will not match
+# Second part : ([+-])?(\d+(?:\.\d+)?)
+# Detects an int or a float alone
+
+# Third part : ([+-])?((X)(?(11)(\^)(\d+(?!\.))|)?)
+# Detects a variable ('X'), unsigned or signed, with or without exponent
+
 
 from collections import Counter
 from exceptions import PolynomialError
@@ -36,10 +38,6 @@ import re
 import ast
 import sys
 
-# monomial_pattern = re.compile(r"([+-])?(\d+(?:\.\d+)?)?([*]?)((X)(?(5)(\^)(\d+(?!\.))|)?)?")
-# testtttt_pattern = re.compile(r"((([+-])?((\d+(?:\.\d+)?)(?(5)[*]?|))?)((X)(?(7)(\^)(\d+(?!\.))|)?)?){1,1}")
-testtttt_pattern = re.compile(
-    r"([+-])?(\d+(?:\.\d+)?)(?(2)[*]?|)((X)(?(4)(\^)(\d+(?!\.))|)?)|([+-])?(\d+(?:\.\d+)?)|([+-])?((X)(?(11)(\^)(\d+(?!\.))|)?){1,1}")
 
 monomial_regex = r"([+-])?(\d+(?:\.\d+)?)(?(2)[*]?|)((X)(?(4)(\^)(\d+(?!\.))|)?)|([+-])?(\d+(?:\.\d+)?)|([+-])?((X)(?(11)(\^)(\d+(?!\.))|)?){1,1}"
 
