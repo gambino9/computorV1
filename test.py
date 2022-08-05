@@ -101,6 +101,7 @@ class PolynomialTest(unittest.TestCase):
         solver = Polynomial(monomes)
 
         self.assertEqual(parser.print_reduced_expression(), "Reduced form : 2 + 7X + 6X^2 = 0")
+        self.assertGreater(solver.discriminant, 0)
         self.assertEqual(solver.degree, '2')
         self.assertEqual(solver.solution, -0.5)
         self.assertAlmostEqual(solver.solution_2, -0.666, 2)
@@ -112,14 +113,31 @@ class PolynomialTest(unittest.TestCase):
         solver = Polynomial(monomes)
 
         self.assertEqual(parser.print_reduced_expression(), "Reduced form : 5 + 10X + 5X^2 = 0")
+        self.assertEqual(solver.discriminant, 0)
         self.assertEqual(solver.degree, '2')
         self.assertEqual(solver.solution, -1)
 
     def test_equation_second_degree_negative_discriminant(self):
-        pass
+        equation = '7 * X^0 + 4 * X^1 + 3 * X^2 = 3 * X^0 +  0 * X^1'
+        parser = Parser(equation)
+        monomes = parser.remove_null_values()
+        solver = Polynomial(monomes)
+
+        self.assertEqual(parser.print_reduced_expression(), "Reduced form : 4 + 4X + 3X^2 = 0")
+        self.assertEqual(solver.degree, '2')
+        self.assertLess(solver.discriminant, 0)
+        self.assertEqual(solver.solution, '(-4 + i√-32) / 6')
+        self.assertEqual(solver.solution_2, '(-4 - i√-32) / 6')
 
     def test_equation_third_or_more_degree(self):
-        pass
+        equation = '9 - 8X^0 - 6X^1 + 0X^2 - 5.6 * X^3 = 3 * X^0'
+        parser = Parser(equation)
+        monomes = parser.remove_null_values()
+        solver = Polynomial(monomes)
+
+        self.assertEqual(parser.print_reduced_expression(), "Reduced form : - 2 - 6X - 5.6X^3 = 0")
+        self.assertEqual(solver.degree, '3')
+        self.assertEqual(solver.solution, 'unsolvable')
 
 
 if __name__ == "__main__":
