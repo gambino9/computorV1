@@ -17,7 +17,7 @@ def main(polynomial_expression: str):
 
 if __name__ == "__main__":
     inp = sys.argv[1:]
-    if not isinstance(inp[0], str) or len(inp) > 1:
+    if not inp or not isinstance(inp[0], str) or len(inp) > 1:
         sys.exit("ERROR : the argument is not correctly formatted")
     arg = inp[0]
     main(str(arg))
